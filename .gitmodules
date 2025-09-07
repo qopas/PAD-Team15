@@ -4,3 +4,6 @@
 [submodule "PAD_CheckIn_Service"]
 	path = PAD_CheckIn_Service
 	url = https://github.com/D4N1ELL/PAD_CheckIn_Service.git
+[submodule "PAD-FAFCab_Booking_Service"]
+	path = PAD-FAFCab_Booking_Service
+	url = https://github.com/D4N1ELL/PAD-FAFCab_Booking_Service.git
