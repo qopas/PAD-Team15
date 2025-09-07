@@ -4,3 +4,6 @@
 [submodule "PAD-Fund-Raising-Service"]
 	path = PAD-Fund-Raising-Service
 	url = https://github.com/qopas/PAD-Fund-Raising-Service
+[submodule "FAF-LostFound-Service"]
+	path = FAF-LostFound-Service
+	url = https://github.com/dariabrianna/FAF-LostFound-Service.git
