@@ -16,8 +16,7 @@
 [submodule "FAF-LostFound-Service"]
 	path = FAF-LostFound-Service
 	url = https://github.com/dariabrianna/FAF-LostFound-Service.git
-
-
-
-
+[submodule "Budgeting_Service"]
+	path = Budgeting_Service
+	url = https://github.com/dariabrianna/Budgeting_Service.git
 
