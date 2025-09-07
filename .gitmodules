@@ -1,3 +1,6 @@
+[submodule "NotificationService"]
+	path = NotificationService
+	url = git@github.com:Tudor-Gavriliuc/NotificationService.git
 [submodule "PAD-Sharing-Service"]
 	path = PAD-Sharing-Service
 	url = https://github.com/qopas/PAD-Sharing-Service.git
