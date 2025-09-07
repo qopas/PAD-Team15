@@ -19,4 +19,6 @@
 [submodule "Budgeting_Service"]
 	path = Budgeting_Service
 	url = https://github.com/dariabrianna/Budgeting_Service.git
-
+[submodule "CommunicationService"]
+	path = CommunicationService
+	url = git@github.com:AnaCalugareanu/Communication-Service.git
