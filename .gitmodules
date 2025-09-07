@@ -10,7 +10,6 @@
 [submodule "PAD-Fund-Raising-Service"]
 	path = PAD-Fund-Raising-Service
 	url = https://github.com/qopas/PAD-Fund-Raising-Service
-
 [submodule "CommunicationService"]
 	path = CommunicationService
 	url = git@github.com:AnaCalugareanu/Communication-Service.git
