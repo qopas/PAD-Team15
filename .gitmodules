@@ -1,3 +1,6 @@
 [submodule "PAD-Sharing-Service"]
 	path = PAD-Sharing-Service
 	url = https://github.com/qopas/PAD-Sharing-Service.git
+[submodule "PAD_CheckIn_Service"]
+	path = PAD_CheckIn_Service
+	url = https://github.com/D4N1ELL/PAD_CheckIn_Service.git
