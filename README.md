@@ -87,6 +87,12 @@ Each microservice owns its data and API surface, is independently deployable and
 
 ---
 
+## 🔗 Architecture Diagram
+
+![Architecture Diagram](resources/Architecture_diagram.png)
+
+---
+
 ## 2. Technologies & Communication Patterns
 
 ### Technologies & Communication Patterns
