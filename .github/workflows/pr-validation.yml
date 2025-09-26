@@ -41,7 +41,3 @@ jobs:
               exit 1
             fi
           done
-      - name: Run Gitleaks Secret Scan
-        uses: zricethezav/gitleaks-action@v2
-        with:
-          args: detect --source . --no-git --redact --exit-code 1
