@@ -30,17 +30,23 @@ jobs:
         with:
           fetch-depth: 0 
 
-      - name: Validate Commit Messages
-        run: |
-          COMMITS=$(git log origin/${{ github.event.pull_request.base.ref }}..HEAD --pretty=format:"%s")
-          echo "Checking commit messages..."
-          echo "$COMMITS" | while read -r line; do
-            if [[ ! "$line" =~ ^(feat|fix|chore|refactor|docs|test|style)(\(.+\))?:\  ]]; then
-              echo "❌ Invalid commit message: $line"
-              echo "Commit messages must follow Conventional Commits (e.g. 'feat: ...', 'fix: ...')"
-              exit 1
-            fi
-          done
+     - name: Validate Commit Messages
+          run: |
+            COMMITS=$(git log origin/${{ github.event.pull_request.base.ref }}..HEAD --pretty=format:"%s")
+            echo "Checking commit messages..."
+            echo "$COMMITS" | while read -r line; do
+              # Skip merge commit messages (those that start with 'Merge')
+              if [[ "$line" =~ ^Merge ]]; then
+                echo "Merge commit found: $line (skipped)"
+                continue
+              fi
+              if [[ ! "$line" =~ ^(feat|fix|chore|refactor|docs|test|style)(\(.+\))?:\  ]]; then
+                echo "❌ Invalid commit message: $line"
+                echo "Commit messages must follow Conventional Commits (e.g. 'feat: ...', 'fix: ...')"
+                exit 1
+              fi
+            done
+
 
       - name: Run Gitleaks Secret Scan
         uses: zricethezav/gitleaks-action@v2
