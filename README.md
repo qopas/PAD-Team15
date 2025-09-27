@@ -1255,7 +1255,93 @@ Common types:
 feat, fix, docs, style, refactor, test, chore
 
 ---
+# Running Services with Docker Compose
 
+This project consists of multiple microservices that can be easily deployed using Docker Compose. All services are available as pre-built Docker images on Docker Hub.
+
+## Prerequisites
+
+- Docker installed on your system
+- Docker Compose installed on your system
+
+## Services Overview
+
+| Service | Docker Hub Image | Port | Description |
+|---------|------------------|------|-------------|
+| Communication Service | `calugareanu/communicationservice:1.0` | 8082 | Handles communication between users |
+| Team Management | `calugareanu/teamanagementservice:1.0` | 8083 | Manages team operations and member coordination |
+| Budgeting Service | `dariabriannaa/budgeting_service:latest` | 8088 | Manages financial budgeting and expense tracking |
+| Lost & Found Service | `dariabriannaa/lostfoundservice:latest` | 8087 | Handles lost and found item management |
+| User Management | `tudor22331/user-management-service:latest` | 8081 | Manages user accounts and authentication |
+| Notification Service | `tudor22331/notification-service:latest` | 8001 | Sends notifications to users |
+| Sharing Service | `dumitrugr/sharing-service:v1.1` | 8089 | Manages resource sharing functionality |
+| Fundraising Service | `dumitrugr/fundraising-service:v1.0` | 8090 | Handles fundraising campaigns and donations |
+
+## Quick Start
+
+1. **Clone the repository** (if you haven't already):
+   ```bash
+   git clone <your-repository-url>
+   cd <your-project-directory>
+   ```
+
+2. **Start all services**:
+   ```bash
+   docker-compose up -d
+   ```
+
+3. **Check service status**:
+   ```bash
+   docker-compose ps
+   ```
+
+4. **View logs** (optional):
+   ```bash
+   # View logs for all services
+   docker-compose logs
+
+   # View logs for a specific service
+   docker-compose logs <service-name>
+   ```
+
+## Service URLs
+
+Once the services are running, you can access them at the following URLs:
+
+- **Communication Service**: http://localhost:8082
+- **Team Management**: http://localhost:8083
+- **Budgeting Service**: http://localhost:8088
+- **Lost & Found Service**: http://localhost:8087
+- **User Management**: http://localhost:8081
+- **Notification Service**: http://localhost:8001
+- **Sharing Service**: http://localhost:8089
+- **Fundraising Service**: http://localhost:8090
+
+## Stopping Services
+
+To stop all services:
+```bash
+docker-compose down
+```
+
+To stop and remove all containers, networks, and volumes:
+```bash
+docker-compose down -v
+```
+
+## Updating Services
+
+To pull the latest images and restart services:
+```bash
+docker-compose pull
+docker-compose up -d
+```
+
+## Troubleshooting
+
+- **Port conflicts**: If any ports are already in use, modify the port mappings in the `docker-compose.yml` file
+- **Service connectivity**: Ensure all services are running by checking `docker-compose ps`
+- **Logs**: Check individual service logs using `docker-compose logs <service-name>` for debugging
 ## 🧪 Test Coverage
 
 - All new features must include unit test
