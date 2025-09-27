@@ -1,0 +1,261 @@
+services:
+  # Communication Service
+  communication-mongodb:
+    image: mongo:7.0
+    container_name: communication-mongodb
+    ports:
+      - "27019:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    volumes:
+      - communication-mongo-data:/data/db
+
+  communicationservice:
+    image: calugareanu/communicationservice:1.0
+    container_name: communicationservice
+    ports:
+      - "8082:80"
+    environment:
+      MONGO_CONNECTION_STRING: "mongodb://admin:secret@communication-mongodb:27017"
+    depends_on:
+      - communication-mongodb
+
+  # Team Management Service
+  mongodbTea:
+    image: mongo:7.0
+    container_name: mongodbTea
+    ports:
+      - "27020:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    volumes:
+      - teammanagement-mongo-data:/data/db
+
+  teamanagementservice:
+    image: calugareanu/teamanagementservice:1.0
+    container_name: teamanagementservice
+    ports:
+      - "8083:80"
+    environment:
+      MONGO_CONNECTION_STRING: "mongodb://admin:secret@mongodbTea:27017"
+    depends_on:
+      - mongodbTea
+
+  # Budgeting Service
+  budgeting_postgres:
+    image: postgres:16
+    container_name: budgeting_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: budgeting_db
+      POSTGRES_USER: budget_user
+      POSTGRES_PASSWORD: parola_ta_aleasa
+    volumes:
+      - budgeting_postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5440:5432"
+
+  budgeting_service:
+    image: dariabriannaa/budgeting_service:1.0.0  # sau build: . dacă vrei să construiești local
+    container_name: budgeting_service
+    ports:
+      - "8088:8000"
+    environment:
+      - POSTGRES_DB=budgeting_db
+      - POSTGRES_USER=budget_user
+      - POSTGRES_PASSWORD=parola_ta_aleasa
+      - DB_HOST=budgeting_postgres
+    depends_on:
+      - budgeting_postgres
+
+
+
+  # Lost & Found Service
+  lostfound-mongo:
+    image: mongo:latest
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    ports:
+      - "5439:27017"
+    volumes:
+      - lostfound-mongo-data:/data/db
+
+  lostfoundservice:
+    image: dariabriannaa/lostfoundservice:1.0
+    container_name: lostfoundservice
+    ports:
+      - "8087:8000"
+    depends_on:
+      - lostfound-mongo
+    environment:
+      - MONGODB_URI=mongodb://root:example@lostfound-mongo:27017/lostfound?authSource=admin
+
+
+  # User Management Service
+  laravel_user_mysql:
+    image: mysql:8.0
+    container_name: laravel_user_mysql
+    restart: unless-stopped
+    ports:
+      - "3301:3306"
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: password
+      MYSQL_USER: laraveluser
+    volumes:
+      - user_mysql_data:/var/lib/mysql
+
+  laravel_user_app:
+    image: tudor22331/user-management-service:v1.1
+    container_name: laravel_user_app
+    restart: unless-stopped
+    depends_on:
+      - laravel_user_mysql
+
+  laravel_user_nginx:
+    image: nginx:alpine
+    container_name: laravel_user_nginx
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    depends_on:
+      - laravel_user_app
+
+  laravel_user_phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: laravel_user_phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: laravel_user_mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root
+    depends_on:
+      - laravel_user_mysql
+
+  # Notification Service
+  laravel-notification-db:
+    image: mysql:8.0
+    container_name: laravel-notification-db
+    restart: unless-stopped
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laraveluser
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      - notification_dbdata:/var/lib/mysql
+
+  laravel-notification-app:
+    image: tudor22331/notification-service:v1.0
+    container_name: laravel-notification-app
+    restart: unless-stopped
+    environment:
+      - DB_HOST=laravel-notification-db
+      - DB_DATABASE=laravel
+      - DB_USERNAME=laraveluser
+      - DB_PASSWORD=password
+    depends_on:
+      - laravel-notification-db
+
+  laravel-notification-webserver:
+    image: nginx:alpine
+    container_name: laravel-notification-webserver
+    restart: unless-stopped
+    ports:
+      - "8001:80"
+    depends_on:
+      - laravel-notification-app
+
+  notification-phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: notification-phpmyadmin
+    environment:
+      PMA_HOST: laravel-notification-db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+    - "8079:80"
+    depends_on:
+      - laravel-notification-db
+
+  # Sharing Service
+  sharing-db:
+    image: postgres:15-alpine
+    container_name: sharing-db
+    environment:
+      POSTGRES_DB: SharingServiceDb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
+    ports:
+      - "5441:5432"
+    volumes:
+      - sharing_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d SharingServiceDb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  sharing-api:
+    image: dumitrugr/sharing-service:v1.1
+    container_name: sharing-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Host=sharing-db;Database=SharingServiceDb;Username=postgres;Password=postgres
+    ports:
+      - "8089:8080"
+    depends_on:
+      sharing-db:
+        condition: service_healthy
+
+  # Fundraising Service
+  fundraising-db:
+    image: postgres:15-alpine
+    container_name: fundraising-db
+    environment:
+      POSTGRES_DB: FundRaisingServiceDb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
+    ports:
+      - "5442:5432"
+    volumes:
+      - fundraising_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d FundRaisingServiceDb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  fundraising-api:
+    image: dumitrugr/fundraising-service:v1.0
+    container_name: fundraising-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Host=fundraising-db;Database=FundRaisingServiceDb;Username=postgres;Password=postgres
+    ports:
+      - "8090:8080"
+    depends_on:
+      fundraising-db:
+        condition: service_healthy
+
+volumes:
+  communication-mongo-data:
+  teammanagement-mongo-data:
+  budgeting_postgres_data:
+  lostfound-mongo-data:
+  user_mysql_data:
+  notification_dbdata:
+  sharing_postgres_data:
+  fundraising_postgres_data:
