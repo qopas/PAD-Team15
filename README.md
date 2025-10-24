@@ -369,68 +369,67 @@ All services follow a consistent response format for both success and error case
 ### 2. Tea Management Service
 **Base URL**: `/api/v1/inventory`
 
-**GET /api/v1/inventory/items**
+**GET /api/Consumable**
 ```json
 // Response (200 OK)
-{
-  "success": true,
-  "message": "Inventory items retrieved successfully",
-  "data": {
-    "items": [
-      {
-        "id": "string",
-        "name": "string",
-        "category": "tea|sugar|cups|paper|markers",
-        "quantity": "number",
-        "unit": "string",
-        "lowStockThreshold": "number",
-        "lastRestocked": "2025-01-15T10:30:00Z"
-      }
-    ]
+[
+  {
+    "id": "22222222-2222-2222-2222-222222222222",
+    "name": "Oolong"
+  },
+  {
+    "id": "33333333-3333-3333-3333-333333333333",
+    "name": "Matcha"
   }
-}
+]
 ```
 
-**POST /api/v1/inventory/consume**
+**POST /api/Consumable**
 ```json
 // Request Body
 {
-  "userId": "string",
-  "itemId": "string",
-  "quantity": "number",
-  "consumedAt": "2025-01-15T10:30:00Z"
+  "string"
 }
 
 // Response (200 OK)
 {
-  "success": true,
-  "message": "Consumption recorded successfully",
-  "data": {
-    "remainingQuantity": "number",
-    "lowStockAlert": "boolean"
-  }
+  "id": "81ec2790-713c-4f96-9be2-fbea3ab89a89",
+  "name": "cookies"
 }
 ```
 
-**GET /api/v1/inventory/usage/{userId}**
+**PUT /api/Consumable**
 ```json
+// Parameters
+{
+  id = "string"
+}
+// Request Body
+{
+  "string"
+}
+// Response (200 OK)
+
+```
+**GET /api/Consumable/{id}**
+```json
+// Parameters
+{
+  id = "string"
+}
 // Response (200 OK)
 {
-  "success": true,
-  "message": "Usage history retrieved successfully",
-  "data": {
-    "userId": "string",
-    "usageHistory": [
-      {
-        "itemId": "string",
-        "itemName": "string",
-        "quantity": "number",
-        "consumedAt": "2025-01-15T10:30:00Z"
-      }
-    ],
-    "totalUsageThisMonth": "number"
-  }
+  "id": "22222222-2222-2222-2222-222222222222",
+  "name": "milk"
 }
+```
+**DELETE /api/Consumable**
+```json
+// Parameters
+{
+  id = "string"
+}
+// Response (200 OK)
 ```
 
 ### 3. Cab Booking Service
@@ -699,75 +698,98 @@ All services follow a consistent response format for both success and error case
 ```
 
 ### 7. Communication Service
-**Base URL**: `/api/v1/communication`
+**Base URL**: `[/api/communication](http://localhost:8082/swagger/v1/swagger.json)`
 
-**POST /api/v1/communication/chats**
+**GET /api/ChatRoom**
 ```json
-// Request Body
-{
-  "createdBy": "string",
-  "name": "string",
-  "type": "private|group",
-  "participants": ["string"],
-  "isPublic": "boolean"
-}
-
-// Response (201 Created)
-{
-  "success": true,
-  "message": "Chat created successfully",
-  "data": {
-    "chatId": "string",
-    "inviteCode": "string"
-  }
-}
-```
-
-**POST /api/v1/communication/chats/{chatId}/messages**
-```json
-// Request Body
-{
-  "userId": "string",
-  "content": "string",
-  "messageType": "text|image|file"
-}
-
-// Response (201 Created)
-{
-  "success": true,
-  "message": "Message sent successfully",
-  "data": {
-    "messageId": "string",
-    "censored": "boolean",
-    "violationDetected": "boolean",
-    "processedContent": "string"
-  }
-}
-```
-
-**GET /api/v1/communication/chats/{chatId}/messages**
-```json
-// Query Parameters: ?limit=50&before=messageId
-
 // Response (200 OK)
-{
-  "success": true,
-  "message": "Messages retrieved successfully",
-  "data": {
-    "messages": [
+[
+  {
+    "chatRoomId": "41a330a3-a79e-4635-b6e9-4bcea3f43c1a",
+    "chatName": "string",
+    "users": [],
+    "isPrivate": true
+  },
+  {
+    "chatRoomId": "328ca261-c668-4e9d-968f-5b1f1926da93",
+    "chatName": "string",
+    "users": [
       {
-        "id": "string",
-        "userId": "string",
-        "userName": "string",
-        "content": "string",
-        "messageType": "string",
-        "timestamp": "2025-01-15T10:30:00Z",
-        "edited": "boolean"
+        "userId": "fa645321-ad82-4e3c-b188-e1701aab18f7",
+        "userName": "ana",
+        "chatRooms": [
+          null,
+          null
+        ]
       }
     ],
-    "hasMore": "boolean"
+    "isPrivate": true
   }
+]
+```
+**GET /api/ChatRoom/{id}**
+```json
+// Parameters
+{
+  "id": "string"
 }
+// Response (200 OK)
+{
+  "chatRoomId": "328ca261-c668-4e9d-968f-5b1f1926da93",
+  "chatName": "string",
+  "users": [
+    {
+      "userId": "fa645321-ad82-4e3c-b188-e1701aab18f7",
+      "userName": "ana",
+      "chatRooms": [
+        null,
+        null
+      ]
+    }
+  ],
+  "isPrivate": true
+}
+```
+
+**POST /api/ChatRoom**
+```json
+// Request Body
+{
+  "chatName": "string",
+  "isPrivate": true
+}
+
+// Response (201 Created)
+{
+  "chatRoomId": "77745cc3-69a3-424c-83ab-b9283c41bd41",
+  "chatName": "Hawai",
+  "users": [],
+  "isPrivate": true
+}
+```
+
+**PUT /api/ChatRoom/{id}**
+```json
+// Parameters
+{
+  "id": "string",
+}
+//Request Body
+{
+  "chatName": "wow",
+  "isPrivate": true
+}
+// Response (204 Created)
+```
+
+**DELETE /api/ChatRoom/{id}**
+```json
+// Parameters
+{
+  "id": "77745cc3-69a3-424c-83ab-b9283c41bd41",
+}
+// Response (200 OK)
+"77745cc3-69a3-424c-83ab-b9283c41bd41"
 ```
 
 ### 8. Check-in Service
