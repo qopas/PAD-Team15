@@ -31,3 +31,6 @@
 [submodule "PAD-Gateway"]
 	path = PAD-Gateway
 	url = https://github.com/qopas/PAD-Gateway
+[submodule "PAD-Service-Discovery"]
+	path = PAD-Service-Discovery
+	url = https://github.com/qopas/PAD-Service-Discovery
