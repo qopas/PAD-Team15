@@ -1,0 +1,158 @@
+{
+  "info": {
+    "name": "Laravel Notification Service",
+    "description": "Complete API collection for Laravel Notification Service with CRUD operations",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "notification-service-api"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/test",
+          "host": ["{{base_url}}"],
+          "path": ["test"]
+        },
+        "description": "Basic health check endpoint to verify service is running"
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Notifications",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/notifications",
+          "host": ["{{base_url}}"],
+          "path": ["api", "notifications"]
+        },
+        "description": "Retrieve all notifications from the database"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Notification by ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/notifications/{{notification_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "notifications", "{{notification_id}}"]
+        },
+        "description": "Retrieve a specific notification by its ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Create Notification",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"message\": \"Sample notification message\",\n  \"type\": \"info\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/notifications",
+          "host": ["{{base_url}}"],
+          "path": ["api", "notifications"]
+        },
+        "description": "Create a new notification"
+      },
+      "response": []
+    },
+    {
+      "name": "Update Notification",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"message\": \"Updated notification message\",\n  \"type\": \"warning\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/notifications/{{notification_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "notifications", "{{notification_id}}"]
+        },
+        "description": "Update an existing notification by ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Notification",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/notifications/{{notification_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "notifications", "{{notification_id}}"]
+        },
+        "description": "Delete a notification by ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Create Test Notification",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/notifications/test/create",
+          "host": ["{{base_url}}"],
+          "path": ["api", "notifications", "test", "create"]
+        },
+        "description": "Create a test notification for development purposes"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8002",
+      "type": "string"
+    },
+    {
+      "key": "notification_id",
+      "value": "1",
+      "type": "string"
+    }
+  ]
+}

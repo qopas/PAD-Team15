@@ -369,68 +369,67 @@ All services follow a consistent response format for both success and error case
 ### 2. Tea Management Service
 **Base URL**: `/api/v1/inventory`
 
-**GET /api/v1/inventory/items**
+**GET /api/Consumable**
 ```json
 // Response (200 OK)
-{
-  "success": true,
-  "message": "Inventory items retrieved successfully",
-  "data": {
-    "items": [
-      {
-        "id": "string",
-        "name": "string",
-        "category": "tea|sugar|cups|paper|markers",
-        "quantity": "number",
-        "unit": "string",
-        "lowStockThreshold": "number",
-        "lastRestocked": "2025-01-15T10:30:00Z"
-      }
-    ]
+[
+  {
+    "id": "22222222-2222-2222-2222-222222222222",
+    "name": "Oolong"
+  },
+  {
+    "id": "33333333-3333-3333-3333-333333333333",
+    "name": "Matcha"
   }
-}
+]
 ```
 
-**POST /api/v1/inventory/consume**
+**POST /api/Consumable**
 ```json
 // Request Body
 {
-  "userId": "string",
-  "itemId": "string",
-  "quantity": "number",
-  "consumedAt": "2025-01-15T10:30:00Z"
+  "string"
 }
 
 // Response (200 OK)
 {
-  "success": true,
-  "message": "Consumption recorded successfully",
-  "data": {
-    "remainingQuantity": "number",
-    "lowStockAlert": "boolean"
-  }
+  "id": "81ec2790-713c-4f96-9be2-fbea3ab89a89",
+  "name": "cookies"
 }
 ```
 
-**GET /api/v1/inventory/usage/{userId}**
+**PUT /api/Consumable**
 ```json
+// Parameters
+{
+  id = "string"
+}
+// Request Body
+{
+  "string"
+}
+// Response (200 OK)
+
+```
+**GET /api/Consumable/{id}**
+```json
+// Parameters
+{
+  id = "string"
+}
 // Response (200 OK)
 {
-  "success": true,
-  "message": "Usage history retrieved successfully",
-  "data": {
-    "userId": "string",
-    "usageHistory": [
-      {
-        "itemId": "string",
-        "itemName": "string",
-        "quantity": "number",
-        "consumedAt": "2025-01-15T10:30:00Z"
-      }
-    ],
-    "totalUsageThisMonth": "number"
-  }
+  "id": "22222222-2222-2222-2222-222222222222",
+  "name": "milk"
 }
+```
+**DELETE /api/Consumable**
+```json
+// Parameters
+{
+  id = "string"
+}
+// Response (200 OK)
 ```
 
 ### 3. Cab Booking Service
@@ -699,75 +698,98 @@ All services follow a consistent response format for both success and error case
 ```
 
 ### 7. Communication Service
-**Base URL**: `/api/v1/communication`
+**Base URL**: `[/api/communication](http://localhost:8082/swagger/v1/swagger.json)`
 
-**POST /api/v1/communication/chats**
+**GET /api/ChatRoom**
 ```json
-// Request Body
-{
-  "createdBy": "string",
-  "name": "string",
-  "type": "private|group",
-  "participants": ["string"],
-  "isPublic": "boolean"
-}
-
-// Response (201 Created)
-{
-  "success": true,
-  "message": "Chat created successfully",
-  "data": {
-    "chatId": "string",
-    "inviteCode": "string"
-  }
-}
-```
-
-**POST /api/v1/communication/chats/{chatId}/messages**
-```json
-// Request Body
-{
-  "userId": "string",
-  "content": "string",
-  "messageType": "text|image|file"
-}
-
-// Response (201 Created)
-{
-  "success": true,
-  "message": "Message sent successfully",
-  "data": {
-    "messageId": "string",
-    "censored": "boolean",
-    "violationDetected": "boolean",
-    "processedContent": "string"
-  }
-}
-```
-
-**GET /api/v1/communication/chats/{chatId}/messages**
-```json
-// Query Parameters: ?limit=50&before=messageId
-
 // Response (200 OK)
-{
-  "success": true,
-  "message": "Messages retrieved successfully",
-  "data": {
-    "messages": [
+[
+  {
+    "chatRoomId": "41a330a3-a79e-4635-b6e9-4bcea3f43c1a",
+    "chatName": "string",
+    "users": [],
+    "isPrivate": true
+  },
+  {
+    "chatRoomId": "328ca261-c668-4e9d-968f-5b1f1926da93",
+    "chatName": "string",
+    "users": [
       {
-        "id": "string",
-        "userId": "string",
-        "userName": "string",
-        "content": "string",
-        "messageType": "string",
-        "timestamp": "2025-01-15T10:30:00Z",
-        "edited": "boolean"
+        "userId": "fa645321-ad82-4e3c-b188-e1701aab18f7",
+        "userName": "ana",
+        "chatRooms": [
+          null,
+          null
+        ]
       }
     ],
-    "hasMore": "boolean"
+    "isPrivate": true
   }
+]
+```
+**GET /api/ChatRoom/{id}**
+```json
+// Parameters
+{
+  "id": "string"
 }
+// Response (200 OK)
+{
+  "chatRoomId": "328ca261-c668-4e9d-968f-5b1f1926da93",
+  "chatName": "string",
+  "users": [
+    {
+      "userId": "fa645321-ad82-4e3c-b188-e1701aab18f7",
+      "userName": "ana",
+      "chatRooms": [
+        null,
+        null
+      ]
+    }
+  ],
+  "isPrivate": true
+}
+```
+
+**POST /api/ChatRoom**
+```json
+// Request Body
+{
+  "chatName": "string",
+  "isPrivate": true
+}
+
+// Response (201 Created)
+{
+  "chatRoomId": "77745cc3-69a3-424c-83ab-b9283c41bd41",
+  "chatName": "Hawai",
+  "users": [],
+  "isPrivate": true
+}
+```
+
+**PUT /api/ChatRoom/{id}**
+```json
+// Parameters
+{
+  "id": "string",
+}
+//Request Body
+{
+  "chatName": "wow",
+  "isPrivate": true
+}
+// Response (204 Created)
+```
+
+**DELETE /api/ChatRoom/{id}**
+```json
+// Parameters
+{
+  "id": "77745cc3-69a3-424c-83ab-b9283c41bd41",
+}
+// Response (200 OK)
+"77745cc3-69a3-424c-83ab-b9283c41bd41"
 ```
 
 ### 8. Check-in Service
@@ -1255,7 +1277,93 @@ Common types:
 feat, fix, docs, style, refactor, test, chore
 
 ---
+# Running Services with Docker Compose
 
+This project consists of multiple microservices that can be easily deployed using Docker Compose. All services are available as pre-built Docker images on Docker Hub.
+
+## Prerequisites
+
+- Docker installed on your system
+- Docker Compose installed on your system
+
+## Services Overview
+
+| Service | Docker Hub Image | Port | Description |
+|---------|------------------|------|-------------|
+| Communication Service | `calugareanu/communicationservice:1.0` | 8082 | Handles communication between users |
+| Team Management | `calugareanu/teamanagementservice:1.0` | 8083 | Manages team operations and member coordination |
+| Budgeting Service | `dariabriannaa/budgeting_service:latest` | 8088 | Manages financial budgeting and expense tracking |
+| Lost & Found Service | `dariabriannaa/lostfoundservice:latest` | 8087 | Handles lost and found item management |
+| User Management | `tudor22331/user-management-service:latest` | 8081 | Manages user accounts and authentication |
+| Notification Service | `tudor22331/notification-service:latest` | 8001 | Sends notifications to users |
+| Sharing Service | `dumitrugr/sharing-service:v1.1` | 8089 | Manages resource sharing functionality |
+| Fundraising Service | `dumitrugr/fundraising-service:v1.0` | 8090 | Handles fundraising campaigns and donations |
+
+## Quick Start
+
+1. **Clone the repository** (if you haven't already):
+   ```bash
+   git clone <your-repository-url>
+   cd <your-project-directory>
+   ```
+
+2. **Start all services**:
+   ```bash
+   docker-compose up -d
+   ```
+
+3. **Check service status**:
+   ```bash
+   docker-compose ps
+   ```
+
+4. **View logs** (optional):
+   ```bash
+   # View logs for all services
+   docker-compose logs
+
+   # View logs for a specific service
+   docker-compose logs <service-name>
+   ```
+
+## Service URLs
+
+Once the services are running, you can access them at the following URLs:
+
+- **Communication Service**: http://localhost:8082
+- **Team Management**: http://localhost:8083
+- **Budgeting Service**: http://localhost:8088
+- **Lost & Found Service**: http://localhost:8087
+- **User Management**: http://localhost:8081
+- **Notification Service**: http://localhost:8001
+- **Sharing Service**: http://localhost:8089
+- **Fundraising Service**: http://localhost:8090
+
+## Stopping Services
+
+To stop all services:
+```bash
+docker-compose down
+```
+
+To stop and remove all containers, networks, and volumes:
+```bash
+docker-compose down -v
+```
+
+## Updating Services
+
+To pull the latest images and restart services:
+```bash
+docker-compose pull
+docker-compose up -d
+```
+
+## Troubleshooting
+
+- **Port conflicts**: If any ports are already in use, modify the port mappings in the `docker-compose.yml` file
+- **Service connectivity**: Ensure all services are running by checking `docker-compose ps`
+- **Logs**: Check individual service logs using `docker-compose logs <service-name>` for debugging
 ## 🧪 Test Coverage
 
 - All new features must include unit test
