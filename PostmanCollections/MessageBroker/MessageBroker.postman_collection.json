@@ -1,0 +1,475 @@
+{
+	"info": {
+		"_postman_id": "message-broker-collection-2025",
+		"name": "Message Broker API",
+		"description": "Complete collection for testing all Message Broker endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/v1/health",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"health"
+					]
+				},
+				"description": "Check if the Message Broker service is healthy"
+			},
+			"response": []
+		},
+		{
+			"name": "Route Message (Sync)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"serviceName\": \"user-service\",\n    \"path\": \"/api/users\",\n    \"method\": \"GET\",\n    \"headers\": {\n        \"Authorization\": \"Bearer sample-token\"\n    },\n    \"body\": null,\n    \"routingType\": \"subscriber\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/v1/route",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"route"
+					]
+				},
+				"description": "Route a message synchronously to a specific service"
+			},
+			"response": []
+		},
+		{
+			"name": "Route Message (Async)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"serviceName\": \"notification-service\",\n    \"path\": \"/api/notifications\",\n    \"method\": \"POST\",\n    \"headers\": {\n        \"Content-Type\": \"application/json\"\n    },\n    \"body\": \"{\\\"userId\\\":\\\"123\\\",\\\"message\\\":\\\"Test notification\\\"}\",\n    \"routingType\": \"subscriber\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/v1/route/async",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"route",
+						"async"
+					]
+				},
+				"description": "Route a message asynchronously to a specific service"
+			},
+			"response": []
+		},
+		{
+			"name": "Route Message via Topic",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"serviceName\": \"user-service\",\n    \"path\": \"/api/events/user-created\",\n    \"method\": \"POST\",\n    \"headers\": {\n        \"Content-Type\": \"application/json\"\n    },\n    \"body\": \"{\\\"userId\\\":\\\"456\\\",\\\"action\\\":\\\"created\\\"}\",\n    \"routingType\": \"topic\",\n    \"topic\": \"user.events\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/v1/route",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"route"
+					]
+				},
+				"description": "Route a message to all subscribers of a topic (pub/sub pattern)"
+			},
+			"response": []
+		},
+		{
+			"name": "Subscribe to Topic",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/v1/topics/user.events/subscribe?subscriber=notification-service",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"topics",
+						"user.events",
+						"subscribe"
+					],
+					"query": [
+						{
+							"key": "subscriber",
+							"value": "notification-service"
+						}
+					]
+				},
+				"description": "Subscribe a service to a specific topic"
+			},
+			"response": []
+		},
+		{
+			"name": "Unsubscribe from Topic",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/v1/topics/user.events/unsubscribe?subscriber=notification-service",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"topics",
+						"user.events",
+						"unsubscribe"
+					],
+					"query": [
+						{
+							"key": "subscriber",
+							"value": "notification-service"
+						}
+					]
+				},
+				"description": "Unsubscribe a service from a specific topic"
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Topics",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/v1/topics",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"topics"
+					]
+				},
+				"description": "Get all topics and their subscribers (pub/sub pattern)"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Topic Subscribers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/v1/topics/user.events/subscribers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"topics",
+						"user.events",
+						"subscribers"
+					]
+				},
+				"description": "Get all subscribers for a specific topic"
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Services",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/v1/services",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"services"
+					]
+				},
+				"description": "Get all registered services from Service Discovery"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Circuit Breakers Status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/v1/circuit-breakers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"circuit-breakers"
+					]
+				},
+				"description": "Get the status of all circuit breakers"
+			},
+			"response": []
+		},
+		{
+			"name": "Test DLQ - Send to Non-Existent Service",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"serviceName\": \"non-existent-service\",\n    \"path\": \"/api/test\",\n    \"method\": \"GET\",\n    \"headers\": {},\n    \"body\": null,\n    \"routingType\": \"subscriber\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/v1/route",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"route"
+					]
+				},
+				"description": "Send a message to a service that doesn't exist - this will fail and go to DLQ after retries"
+			},
+			"response": []
+		},
+		{
+			"name": "Test DLQ - Send to Down Service",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"serviceName\": \"user-management-service\",\n    \"path\": \"/api/invalid-endpoint\",\n    \"method\": \"POST\",\n    \"headers\": {\n        \"Content-Type\": \"application/json\"\n    },\n    \"body\": \"{\\\"test\\\":\\\"data\\\"}\",\n    \"routingType\": \"subscriber\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/v1/route",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"route"
+					]
+				},
+				"description": "Send a message to an invalid endpoint - this should fail and eventually go to DLQ"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Dead Letter Queue (DLQ)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/v1/dlq",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"dlq"
+					]
+				},
+				"description": "Get all messages in the Dead Letter Queue (messages that failed after max retries)"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Specific DLQ Message",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/v1/dlq/message-id-here",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"dlq",
+						"message-id-here"
+					]
+				},
+				"description": "Get a specific message from the Dead Letter Queue by its ID"
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Message from DLQ",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/v1/dlq/message-id-here",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"dlq",
+						"message-id-here"
+					]
+				},
+				"description": "Remove a specific message from the Dead Letter Queue"
+			},
+			"response": []
+		},
+		{
+			"name": "Retry DLQ Message",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/v1/dlq/message-id-here/retry",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"dlq",
+						"message-id-here",
+						"retry"
+					]
+				},
+				"description": "Retry a failed message from the Dead Letter Queue"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Messages Info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/v1/messages",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"messages"
+					]
+				},
+				"description": "Get information about the durable message queue"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Statistics",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/v1/stats",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"stats"
+					]
+				},
+				"description": "Get statistics about message processing, DLQ, and services"
+			},
+			"response": []
+		}
+	]
+}
+
