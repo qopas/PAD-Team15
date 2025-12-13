@@ -89,7 +89,8 @@ Each microservice owns its data and API surface, is independently deployable and
 
 ## 🔗 Architecture Diagram
 
-![Architecture Diagram](resources/Architecture_diagram.png)
+![Architecture Diagram](resources/PAD_diagrama_Lab5.png)
+
 
 ---
 
